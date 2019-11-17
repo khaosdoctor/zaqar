@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "clean": "rm -rf ./dist",
+    "docs": "aglio -i ./docs/mail.apib -o index.html",
     "test": "mocha --require ts-node/register --require source-map-support/register --recursive tests/**/*.test.ts",
     "coverage": "nyc mocha --require ts-node/register --require source-map-support/register --recursive tests/**/*.test.ts",
     "lint": "tslint --project tsconfig.json",
@@ -18,7 +19,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint"
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run docs"
     }
   },
   "repository": {
@@ -35,6 +37,7 @@
     "@types/node": "^10.11.6",
     "@types/pug": "^2.0.4",
     "@types/sinon": "^7.0.13",
+    "aglio": "^2.3.0",
     "axiosist": "^0.6.2",
     "chai": "^4.2.0",
     "concurrently": "^4.0.1",
