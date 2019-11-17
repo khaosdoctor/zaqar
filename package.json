@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "clean": "rm -rf ./dist",
-    "docs": "aglio -i ./docs/mail.apib -o index.html",
+    "docs": "aglio -i ./docs/mail.apib -o index.html && git commit -am 'Update docs'",
     "test": "mocha --require ts-node/register --require source-map-support/register --recursive tests/**/*.test.ts",
     "coverage": "nyc mocha --require ts-node/register --require source-map-support/register --recursive tests/**/*.test.ts",
     "lint": "tslint --project tsconfig.json",
