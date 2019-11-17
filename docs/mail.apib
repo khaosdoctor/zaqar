@@ -1,0 +1,117 @@
+FORMAT: 1A
+
+# Zaqar: Email Microservice
+
+Microservice to send emails to other people.
+
+# Group Email
+
+## Send email [POST /send]
+
+Send an email to a recipient
+
++ Request (application/json)
+
+    ```json
+    {
+      "to": ["to@email.com"],
+      "from": "my@email.com",
+      "subject": "subject",
+      "template": "p Pug Template",
+      "cc": ["one@email.com"],
+      "bcc": ["two@email.com"]
+    }
+    ```
+
+    + Schema
+
+        ```json
+        {
+          type: 'object',
+          properties: {
+            from: { type: 'string', format: 'email' },
+            to: {
+              type: 'array',
+              items: {
+                type: 'string',
+                format: 'email'
+              }
+            },
+            subject: {
+              type: 'string'
+            },
+            template: {
+              type: 'string'
+            },
+            cc: {
+              type: 'array',
+              items: {
+                type: 'string',
+                format: 'email'
+              }
+            },
+            bcc: {
+              type: 'array',
+              items: {
+                type: 'string',
+                format: 'email'
+              }
+            }
+          },
+          required: ['from', 'to', 'subject', 'template'],
+          additionalProperties: false
+        }
+        ```
+
++ Response 200 (application/json)
+
+    ```json
+    {
+      "to": [
+        "lucas@nindoo.ai"
+      ],
+      "from": "from@email.com",
+      "subject": "test",
+      "bcc": [],
+      "cc": [],
+      "template": "<p>test</p>"
+    }
+    ```
++ Response 422 (application/json)
+
+    ```json
+    {
+      "status": 422,
+      "error": {
+        "code": "failed_to_parse_template",
+        "message": "Error parsing email template: \"Pug:1:2\n  > 1| p{test}\n--------^\n\nunexpected text \"{test\"\""
+      },
+      "app": "zaqar"
+    }
+    ```
+
++ Response 422 (application/json)
+
+    ```json
+    {
+      "status": 422,
+      "error": {
+        "code": "unprocessable_entity",
+        "message": "'template' is required"
+      },
+      "app": "zaqar"
+    }
+    ```
+
++ Response 500 (application/json)
+
+    ```json
+    {
+      "status": 500,
+      "error": {
+        "code": "internal_server_error",
+        "message": "Unexpected token } in JSON at position 85"
+      },
+      "app": "zaqar"
+    }
+    ```
