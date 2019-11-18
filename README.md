@@ -10,6 +10,7 @@
   - [Usage](#usage)
     - [Docker](#docker)
     - [Helm Chart](#helm-chart)
+    - [Envs](#envs)
   - [API](#api)
 
 ## Considerations
@@ -43,6 +44,14 @@ helm install zaqar/zaqar --name=zaqar-mail-server
 ```
 
 > Zaqar is exposed **locally only**, this means you will **not** be able to access it externally unless you manually create an Ingress. This is due to the best practices where microservices should only communicate with each other in the local network
+
+### Envs
+
+You should set two environment variables:
+
+- `SENDGRID_APIKEY`: As of now, Zaqar only accepts Sendgrid as mail sender, so this is where you put your API ket
+- `DEFAULT_FROM_ADDRESS`: The email to be the "from" address
+
 
 ## API
 
