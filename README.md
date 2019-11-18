@@ -116,4 +116,4 @@ Which answers:
 }
 ```
 
-> The whole API is described at [the api documentation]("https"://lsantos.dev/zaqar)
+> The whole API is described at [the api documentation](https://lsantos.dev/zaqar)
