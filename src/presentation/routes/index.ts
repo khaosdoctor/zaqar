@@ -1,5 +1,7 @@
+import send from './email/send'
+
 export default {
   email: {
-    send: require('./email/send')
+    send
   }
 }

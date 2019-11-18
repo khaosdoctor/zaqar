@@ -6,7 +6,7 @@ import { EmailService } from '../../../services/EmailService'
 import { IEmail } from '../../../domain/email/structures/IEmail'
 import { TemplateError } from '../../../domain/email/errors/TemplateError'
 
-export function factory (service: EmailService) {
+export default function (service: EmailService) {
   return [
     validate({
       type: 'object',
@@ -23,7 +23,13 @@ export function factory (service: EmailService) {
           type: 'string'
         },
         template: {
-          type: 'string'
+          type: 'object',
+          properties: {
+            text: { type: 'string' },
+            lang: { type: 'string' }
+          },
+          additionalProperties: false,
+          required: ['text', 'lang']
         },
         cc: {
           type: 'array',

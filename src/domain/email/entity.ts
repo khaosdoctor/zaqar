@@ -1,10 +1,13 @@
-import pug from 'pug'
+import { injectable } from 'tsyringe'
 import { IEmail } from './structures/IEmail'
 import { TemplateError } from './errors/TemplateError'
+import { RenderService } from '../../services/RenderService'
 
+@injectable()
 export class Email {
   private readonly rawTemplate: string
   private readonly templateData: any
+  private readonly templateLang: string
   readonly from: string
   readonly to: string[]
   readonly cc: string[]
@@ -12,19 +15,20 @@ export class Email {
   readonly subject: string
   compiledTemplate: string = ''
 
-  constructor (params: IEmail) {
+  constructor (params: IEmail, private readonly renderService: RenderService) {
     this.from = params.from
     this.to = params.to
     this.subject = params.subject
-    this.rawTemplate = params.template
+    this.rawTemplate = params.template.text
+    this.templateLang = params.template.lang
     this.templateData = params.data
     this.cc = params.cc || []
     this.bcc = params.bcc || []
   }
 
-  compileTemplate () {
+  async compileTemplate () {
     try {
-      this.compiledTemplate = pug.render(this.rawTemplate, this.templateData)
+      this.compiledTemplate = await this.renderService.render(this.templateLang, this.rawTemplate, this.templateData)
       return this.compiledTemplate
     } catch (error) {
       throw new TemplateError(error.message)
@@ -36,7 +40,7 @@ export class Email {
       to: this.to,
       from: this.from,
       subject: this.subject,
-      html: this.compiledTemplate || this.compileTemplate()
+      html: this.compiledTemplate
     }
   }
 
@@ -47,7 +51,10 @@ export class Email {
       subject: this.subject,
       bcc: this.bcc,
       cc: this.cc,
-      template: this.compiledTemplate
+      template: {
+        text: this.rawTemplate,
+        lang: this.templateLang
+      }
     }
   }
 }
