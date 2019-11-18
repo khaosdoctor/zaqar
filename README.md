@@ -59,7 +59,7 @@ Zaqar only has the `POST /send` endpoint which takes the following "payload":
 }
 ```
 
-Following the "schema":
+Following the schema:
 
 ```json
 {
@@ -98,6 +98,8 @@ Following the "schema":
   "additionalProperties": false
 }
 ```
+
+> The `data` key is reserved to template data variables, so if you have a variable called `username` in your email, you should send a `{ data: { username: "user" } }` in the payload.
 
 Which answers:
 

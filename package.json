@@ -36,7 +36,7 @@
     "@types/node": "^10.11.6",
     "@types/pug": "^2.0.4",
     "@types/sinon": "^7.0.13",
-    "aglio": "^2.3.0",
+
     "axiosist": "^0.6.2",
     "chai": "^4.2.0",
     "concurrently": "^4.0.1",
@@ -51,6 +51,9 @@
     "tslint-config-standard": "^8.0.1",
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "^3.1.1"
+  },
+  "peerDependencies": {
+    "aglio": "^2.3.0"
   },
   "dependencies": {
     "@expresso/app": "^1.1.1",

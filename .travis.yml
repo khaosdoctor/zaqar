@@ -1,0 +1,36 @@
+os:
+  - linux
+language: node_js
+node_js:
+  - "node"
+  - "11"
+  - "10"
+  - "9"
+  - "8"
+matrix:
+  fast_finish: true
+
+services:
+  - docker
+
+before_script:
+  - npm i -g mocha nyc typescript
+  - npm i
+
+jobs:
+  include:
+    - stage: "Build"
+      script: npm run build:clean
+
+    - stage: "Test"
+      script: npm run coverage
+
+after_success:
+  - npm run report
+
+notifications:
+  email:
+    recipients:
+      - hello@lsantos.dev
+    on_success: change
+    on_failure: change
