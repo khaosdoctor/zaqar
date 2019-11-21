@@ -1,12 +1,12 @@
-const requireGlob = require('require-glob')
-import { RendererExport, Renderers } from '../presentation/app'
+import { Renderers } from '../presentation/app'
 
-export default function () {
-  const loadedRenderers: { [index: string]: RendererExport } = requireGlob.sync('zaqar-renderer-*')
+export default function (rendererList: string) {
 
+  const renderersToLoad: string[] = rendererList.split(',')
   let renderers: Renderers = {}
-  for (let loadedRenderer of Object.entries(loadedRenderers)) {
-    const [, { name, fn }] = loadedRenderer
+
+  for (let rendererName of renderersToLoad) {
+    const { name, fn } = require(rendererName)
     renderers[name] = fn
   }
 

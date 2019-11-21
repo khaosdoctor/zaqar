@@ -19,7 +19,7 @@ export type Renderers = {
 export const app: IExpressoAppFactory<IAppConfig> = expresso(async (app: Express, config: IAppConfig, environment: string) => {
   container.register('DefaultFromAddress', { useValue: config.defaultFromAddress })
   container.register('SendgridService', { useValue: sendgrid.factory(config.sendgrid.apiKey) })
-  container.register('Renderers', { useValue: loadRenderers() })
+  container.register('Renderers', { useValue: loadRenderers(config.rendererList) })
   // Resolve services with container
   const services = container.resolve(Services)
 
