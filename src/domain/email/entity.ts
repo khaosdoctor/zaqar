@@ -1,6 +1,5 @@
 import { injectable } from 'tsyringe'
 import { IEmail } from './structures/IEmail'
-import { TemplateError } from './errors/TemplateError'
 import { RenderService } from '../../services/RenderService'
 
 @injectable()
