@@ -5,6 +5,8 @@ import { Request, Response, NextFunction } from 'express'
 import { EmailService } from '../../../services/EmailService'
 import { IEmail } from '../../../domain/email/structures/IEmail'
 import { TemplateError } from '../../../domain/email/errors/TemplateError'
+import { RendererNotFoundError } from '../../../services/errors/RendererNotFoundError'
+import { InvalidRendererError } from '../../../services/errors/InvalidRendererError'
 
 export default function (service: EmailService) {
   return [
@@ -61,6 +63,8 @@ export default function (service: EmailService) {
     }),
     (err: any, _req: Request, _res: Response, next: NextFunction) => {
       if (err instanceof TemplateError) return next(boom.badData(err.message, { code: 'failed_to_parse_template' }))
+      if (err instanceof RendererNotFoundError) return next(boom.notFound(err.message, { code: 'renderer_not_found' }))
+      if (err instanceof InvalidRendererError) return next(boom.internal(err.message, { code: 'invalid_render' }))
       next(err)
     }
   ]
