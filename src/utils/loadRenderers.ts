@@ -1,14 +1,22 @@
 import { Renderers } from '../presentation/app'
 
-export default function (rendererList: string) {
+function loadRenderers (rendererList: string) {
 
   const renderersToLoad: string[] = rendererList.split(',')
   let renderers: Renderers = {}
 
   for (let rendererName of renderersToLoad) {
-    const { name, fn } = require(rendererName)
-    renderers[name] = fn
+    try {
+      const { name, fn } = require(rendererName)
+      renderers[name] = fn
+    } catch (err) {
+      console.error(`[Zaqar Renderer]: Could not require renderer ${rendererName}`)
+    }
   }
 
   return renderers
+}
+
+export default {
+  loadRenderers
 }

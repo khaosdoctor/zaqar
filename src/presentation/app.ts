@@ -6,7 +6,7 @@ import errors from '@expresso/errors'
 import sendgrid from '../lib/sendgrid'
 import { Services } from '../services'
 import { IAppConfig } from '../app-config'
-import loadRenderers from '../utils/loadRenderers'
+import loader from '../utils/loadRenderers'
 import { IExpressoAppFactory } from '@expresso/server'
 import { Express, Request, Response, NextFunction } from 'express'
 
@@ -19,7 +19,7 @@ export type Renderers = {
 export const app: IExpressoAppFactory<IAppConfig> = expresso(async (app: Express, config: IAppConfig, environment: string) => {
   container.register('DefaultFromAddress', { useValue: config.defaultFromAddress })
   container.register('SendgridService', { useValue: sendgrid.factory(config.sendgrid.apiKey) })
-  container.register('Renderers', { useValue: loadRenderers(config.rendererList) })
+  container.register('Renderers', { useValue: loader.loadRenderers(config.rendererList) })
   // Resolve services with container
   const services = container.resolve(Services)
 
