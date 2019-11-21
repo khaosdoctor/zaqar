@@ -1,5 +1,3 @@
-const requireGlob = require('require-glob')
-
 import 'reflect-metadata'
 import routes from './routes'
 import expresso from '@expresso/app'
@@ -8,21 +6,20 @@ import errors from '@expresso/errors'
 import sendgrid from '../lib/sendgrid'
 import { Services } from '../services'
 import { IAppConfig } from '../app-config'
+import loadRenderers from '../utils/loadRenderers'
 import { IExpressoAppFactory } from '@expresso/server'
 import { Express, Request, Response, NextFunction } from 'express'
 
 export type RendererFn = (text: string, data: any) => Promise<string>
+export type RendererExport = { name: string, fn: RendererFn }
 export type Renderers = {
   [rendererName: string]: RendererFn
 }
 
 export const app: IExpressoAppFactory<IAppConfig> = expresso(async (app: Express, config: IAppConfig, environment: string) => {
-
-  const renderers: Renderers = requireGlob.sync('zaqar-renderer-*')
-
   container.register('DefaultFromAddress', { useValue: config.defaultFromAddress })
   container.register('SendgridService', { useValue: sendgrid.factory(config.sendgrid.apiKey) })
-  container.register('Renderers', { useValue: renderers })
+  container.register('Renderers', { useValue: loadRenderers() })
   // Resolve services with container
   const services = container.resolve(Services)
 
