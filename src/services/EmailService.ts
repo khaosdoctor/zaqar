@@ -12,6 +12,7 @@ export class EmailService {
 
   async sendEmail (emailData: IEmail): Promise<Email> {
     const email = new Email(emailData, this.renderService)
+    await email.compileTemplate()
     return this.client.send(email)
   }
 }

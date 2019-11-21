@@ -13,7 +13,6 @@ export class SendgridClient {
   }
 
   async send (email: Email): Promise<Email> {
-    await email.compileTemplate()
     await this.mailClient.send({ ...email.message, from: { email: this.defaultFromAddress } }, true)
     return email
   }
