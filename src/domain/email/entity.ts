@@ -27,12 +27,8 @@ export class Email {
   }
 
   async compileTemplate () {
-    try {
-      this.compiledTemplate = await this.renderService.render(this.templateLang, this.rawTemplate, this.templateData)
-      return this.compiledTemplate
-    } catch (error) {
-      throw new TemplateError(error.message)
-    }
+    this.compiledTemplate = await this.renderService.render(this.templateLang, this.rawTemplate, this.templateData)
+    return this.compiledTemplate
   }
 
   get message () {
