@@ -2,7 +2,7 @@ import { Renderers } from '../presentation/app'
 
 function loadRenderers (rendererList: string) {
 
-  const renderersToLoad: string[] = rendererList.split(',')
+  const renderersToLoad: string[] = rendererList.split(' ')
   let renderers: Renderers = {}
 
   for (let rendererName of renderersToLoad) {

@@ -14,7 +14,7 @@
     "build:clean": "npm run clean && npm run build",
     "build:watch": "tsc -w",
     "build:start": "npm run build:clean && npm start",
-    "start": "node dist/index.js",
+    "start": "./scripts/install_renderers.sh && node dist/index.js",
     "start:debug": "concurrently -s all \"tsc -w\" \"DEBUG=expresso:*,gg:* nodemon dist/index.js\""
   },
   "husky": {

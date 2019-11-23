@@ -16,7 +16,7 @@ export interface IAppConfig extends IExpressoConfigOptions {
 export const config: IAppConfig = {
   name: 'zaqar',
   defaultFromAddress: env.get('DEFAULT_FROM_ADDRESS', 'some@email.com'),
-  rendererList: env.get('RENDERER_LIST', 'zaqar-renderer-ejs,zaqar-renderer-mustache'),
+  rendererList: env.get('RENDERER_LIST', 'zaqar-renderer-ejs zaqar-renderer-mustache'),
   server: {
     printOnListening: true
   },
