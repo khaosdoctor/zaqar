@@ -58,7 +58,7 @@ describe('POST /send', () => {
   describe('when required parameters are given', () => {
     let api: AxiosInstance
     let response: AxiosResponse<any>
-    let loaderStub: sinon.SinonStub
+    let loaderStub: any
     const emailData = { from: 'mock@email.com', to: ['test@mock.com'], subject: 'mock', template: { lang: 'nunjucks', text: 'my template' }, data: { name: 'test' } }
 
     before(async () => {
@@ -109,7 +109,7 @@ describe('POST /send', () => {
   describe('when the renderer is not found', () => {
     let api: AxiosInstance
     let response: AxiosResponse<any>
-    let loaderStub: sinon.SinonStub
+    let loaderStub: any
     const emailData = { from: 'mock@email.com', to: ['test@mock.com'], subject: 'mock', template: { lang: 'nunjucks', text: 'my template' }, data: { name: 'test' } }
 
     before(async () => {
@@ -145,7 +145,7 @@ describe('POST /send', () => {
   describe('when the renderer is invalid', () => {
     let api: AxiosInstance
     let response: AxiosResponse<any>
-    let loaderStub: sinon.SinonStub
+    let loaderStub: any
     const emailData = { from: 'mock@email.com', to: ['test@mock.com'], subject: 'mock', template: { lang: 'nunjucks', text: 'my template' }, data: { name: 'test' } }
 
     before(async () => {
@@ -181,7 +181,7 @@ describe('POST /send', () => {
   describe('when the renderer throws an error', () => {
     let api: AxiosInstance
     let response: AxiosResponse<any>
-    let loaderStub: sinon.SinonStub
+    let loaderStub: any
     const emailData = { from: 'mock@email.com', to: ['test@mock.com'], subject: 'mock', template: { lang: 'nunjucks', text: 'my template' }, data: { name: 'test' } }
 
     before(async () => {
