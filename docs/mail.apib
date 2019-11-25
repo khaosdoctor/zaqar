@@ -17,7 +17,13 @@ Send an email to a recipient
       "to": ["to@email.com"],
       "from": "my@email.com",
       "subject": "subject",
-      "template": "p Pug Template",
+      "template": {
+        "lang": "mustache",
+        "text": "Hello {{name}}"
+      },
+      "data": {
+        "name": "Lucas",
+      },
       "cc": ["one@email.com"],
       "bcc": ["two@email.com"]
     }
@@ -41,7 +47,13 @@ Send an email to a recipient
               type: 'string'
             },
             template: {
-              type: 'string'
+              type: 'object',
+              properties: {
+                text: { type: 'string' },
+                lang: { type: 'string' }
+              },
+              additionalProperties: false,
+              required: ['text', 'lang']
             },
             cc: {
               type: 'array',
@@ -49,6 +61,9 @@ Send an email to a recipient
                 type: 'string',
                 format: 'email'
               }
+            },
+            data: {
+              type: 'object'
             },
             bcc: {
               type: 'array',
@@ -58,7 +73,7 @@ Send an email to a recipient
               }
             }
           },
-          required: ['from', 'to', 'subject', 'template'],
+          required: ['to', 'subject', 'template'],
           additionalProperties: false
         }
         ```
@@ -74,19 +89,13 @@ Send an email to a recipient
       "subject": "test",
       "bcc": [],
       "cc": [],
-      "template": "<p>test</p>"
-    }
-    ```
-+ Response 422 (application/json)
-
-    ```json
-    {
-      "status": 422,
-      "error": {
-        "code": "failed_to_parse_template",
-        "message": "Error parsing email template: \"Pug:1:2\n  > 1| p{test}\n--------^\n\nunexpected text \"{test\"\""
+      "template": {
+        "lang": "mustache",
+        "text": "Hello {{name}}"
       },
-      "app": "zaqar"
+      "data": {
+        "name": "Lucas"
+      }
     }
     ```
 
@@ -111,6 +120,32 @@ Send an email to a recipient
       "error": {
         "code": "internal_server_error",
         "message": "Unexpected token } in JSON at position 85"
+      },
+      "app": "zaqar"
+    }
+    ```
+
++ Response 500 (application/json)
+
+    ```json
+    {
+      "status": 500,
+      "error": {
+        "code": "invalid_renderer",
+        "message": "Renderer your_invalid_renderer is invalid"
+      },
+      "app": "zaqar"
+    }
+    ```
+
++ Response 500 (application/json)
+
+    ```json
+    {
+      "status": 500,
+      "error": {
+        "code": "failed_to_parse_template",
+        "message": "Your renderer message"
       },
       "app": "zaqar"
     }
