@@ -4,7 +4,13 @@
   "<span class="hljs-attribute">to</span>": <span class="hljs-value">[<span class="hljs-string">"to@email.com"</span>]</span>,
   "<span class="hljs-attribute">from</span>": <span class="hljs-value"><span class="hljs-string">"my@email.com"</span></span>,
   "<span class="hljs-attribute">subject</span>": <span class="hljs-value"><span class="hljs-string">"subject"</span></span>,
-  "<span class="hljs-attribute">template</span>": <span class="hljs-value"><span class="hljs-string">"p Pug Template"</span></span>,
+  "<span class="hljs-attribute">template</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">lang</span>": <span class="hljs-value"><span class="hljs-string">"mustache"</span></span>,
+    "<span class="hljs-attribute">text</span>": <span class="hljs-value"><span class="hljs-string">"Hello {{name}}"</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">data</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Lucas"</span></span>,
+  }</span>,
   "<span class="hljs-attribute">cc</span>": <span class="hljs-value">[<span class="hljs-string">"one@email.com"</span>]</span>,
   "<span class="hljs-attribute">bcc</span>": <span class="hljs-value">[<span class="hljs-string">"two@email.com"</span>]
 </span>}</code></pre>
@@ -23,7 +29,13 @@
       type: 'string'
     },
     template: {
-      type: 'string'
+      type: 'object',
+      properties: {
+        text: { type: 'string' },
+        lang: { type: 'string' }
+      },
+      additionalProperties: false,
+      required: ['text', 'lang']
     },
     cc: {
       type: 'array',
@@ -31,6 +43,9 @@
         type: 'string',
         format: 'email'
       }
+    },
+    data: {
+      type: 'object'
     },
     bcc: {
       type: 'array',
@@ -40,7 +55,7 @@
       }
     }
   },
-  required: ['from', 'to', 'subject', 'template'],
+  required: ['to', 'subject', 'template'],
   additionalProperties: false
 }</code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
   "<span class="hljs-attribute">to</span>": <span class="hljs-value">[
@@ -50,14 +65,13 @@
   "<span class="hljs-attribute">subject</span>": <span class="hljs-value"><span class="hljs-string">"test"</span></span>,
   "<span class="hljs-attribute">bcc</span>": <span class="hljs-value">[]</span>,
   "<span class="hljs-attribute">cc</span>": <span class="hljs-value">[]</span>,
-  "<span class="hljs-attribute">template</span>": <span class="hljs-value"><span class="hljs-string">"&lt;p&gt;test&lt;/p&gt;"</span>
-</span>}</code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>422</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
-  "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-number">422</span></span>,
-  "<span class="hljs-attribute">error</span>": <span class="hljs-value">{
-    "<span class="hljs-attribute">code</span>": <span class="hljs-value"><span class="hljs-string">"failed_to_parse_template"</span></span>,
-    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Error parsing email template: \"Pug:1:2\n  &gt; 1| p{test}\n--------^\n\nunexpected text \"{test\"\""</span>
+  "<span class="hljs-attribute">template</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">lang</span>": <span class="hljs-value"><span class="hljs-string">"mustache"</span></span>,
+    "<span class="hljs-attribute">text</span>": <span class="hljs-value"><span class="hljs-string">"Hello {{name}}"</span>
   </span>}</span>,
-  "<span class="hljs-attribute">app</span>": <span class="hljs-value"><span class="hljs-string">"zaqar"</span>
+  "<span class="hljs-attribute">data</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Lucas"</span>
+  </span>}
 </span>}</code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>422</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
   "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-number">422</span></span>,
   "<span class="hljs-attribute">error</span>": <span class="hljs-value">{
@@ -70,6 +84,20 @@
   "<span class="hljs-attribute">error</span>": <span class="hljs-value">{
     "<span class="hljs-attribute">code</span>": <span class="hljs-value"><span class="hljs-string">"internal_server_error"</span></span>,
     "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Unexpected token } in JSON at position 85"</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">app</span>": <span class="hljs-value"><span class="hljs-string">"zaqar"</span>
+</span>}</code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>500</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-number">500</span></span>,
+  "<span class="hljs-attribute">error</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">code</span>": <span class="hljs-value"><span class="hljs-string">"invalid_renderer"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Renderer your_invalid_renderer is invalid"</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">app</span>": <span class="hljs-value"><span class="hljs-string">"zaqar"</span>
+</span>}</code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>500</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-number">500</span></span>,
+  "<span class="hljs-attribute">error</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">code</span>": <span class="hljs-value"><span class="hljs-string">"failed_to_parse_template"</span></span>,
+    "<span class="hljs-attribute">message</span>": <span class="hljs-value"><span class="hljs-string">"Your renderer message"</span>
   </span>}</span>,
   "<span class="hljs-attribute">app</span>": <span class="hljs-value"><span class="hljs-string">"zaqar"</span>
 </span>}</code></pre><div style="height: 1px;"></div></div></div></div></div></section></div></div></div><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 25 Nov 2019</p><script>/* eslint-env browser */
