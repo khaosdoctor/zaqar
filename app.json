@@ -1,0 +1,24 @@
+{
+  "name": "Zaqar",
+  "description": "Email microservice writen in Node.js",
+  "repository": "https://github.com/khaosdoctor/zaqar",
+  "logo": "",
+  "keywords": ["node", "email", "microservice", "zaqar", "mail"],
+  "env": {
+    "DEFAULT_FROM_ADDRESS": {
+      "description": "The email to be the \"from\" address in case there's no from address in the email.",
+      "value": "some@email.com",
+      "required": true
+    },
+    "RENDERER_LIST": {
+      "description": "A space-separated list of renderer packages to be loaded on load",
+      "value": "zaqar-renderer-ejs zaqar-renderer-mustache",
+      "required": true
+    },
+    "SENDGRID_APIKEY": {
+      "description": "As of now, Zaqar only accepts Sendgrid as mail sender, so this is where you put your API key",
+      "required": true
+    }
+  }
+}
+

@@ -49,6 +49,12 @@ helm install zaqar/zaqar --name=zaqar-mail-server
 
 > Zaqar is exposed **locally only**, this means you will **not** be able to access it externally unless you manually create an Ingress. This is due to the best practices where microservices should only communicate with each other in the local network
 
+### Heroku
+
+Clock the button below to deploy zaqar to Heroku
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 ### Envs
 
 You should set two environment variables:
