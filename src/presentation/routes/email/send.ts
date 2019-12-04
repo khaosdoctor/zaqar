@@ -13,12 +13,11 @@ export default function (service: EmailService) {
     validate({
       type: 'object',
       properties: {
-        from: { type: 'string', format: 'email' },
+        from: { oneOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }] },
         to: {
           type: 'array',
           items: {
-            type: 'string',
-            format: 'email'
+            anyOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }]
           }
         },
         subject: {
@@ -36,18 +35,19 @@ export default function (service: EmailService) {
         cc: {
           type: 'array',
           items: {
-            type: 'string',
-            format: 'email'
+            anyOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }]
           }
         },
         data: {
           type: 'object'
         },
+        replyTo: {
+          oneOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }]
+        },
         bcc: {
           type: 'array',
           items: {
-            type: 'string',
-            format: 'email'
+            anyOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }]
           }
         }
       },
