@@ -51,7 +51,7 @@ helm install zaqar/zaqar --name=zaqar-mail-server
 
 ### Heroku
 
-Clock the button below to deploy zaqar to Heroku
+Click the button below to deploy zaqar to Heroku
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
