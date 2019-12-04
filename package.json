@@ -58,7 +58,7 @@
     "@expresso/errors": "^1.3.0",
     "@expresso/expresso": "^0.15.0",
     "@expresso/server": "^1.0.2",
-    "@expresso/validator": "^1.0.5",
+    "@expresso/validator": "^1.1.1",
     "@sendgrid/mail": "^6.4.0",
     "express-rescue": "^1.1.5",
     "reflect-metadata": "^0.1.13",
