@@ -4,16 +4,14 @@ import { Email } from '../../domain/email/entity'
 
 @injectable()
 export class SendgridClient {
-  private readonly defaultFromAddress: string
   private readonly mailClient: typeof MailService
 
-  constructor (@inject('DefaultFromAddress') defaultFromAddress: string, @inject('SendgridService') mailService: typeof MailService) {
-    this.defaultFromAddress = defaultFromAddress
+  constructor (@inject('SendgridService') mailService: typeof MailService) {
     this.mailClient = mailService
   }
 
   async send (email: Email): Promise<Email> {
-    await this.mailClient.send({ ...email.message, from: { email: email.from || this.defaultFromAddress }, cc: email.cc, bcc: email.bcc }, true)
+    await this.mailClient.sendMultiple({ ...email.message })
     return email
   }
 }

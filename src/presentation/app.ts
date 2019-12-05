@@ -19,7 +19,7 @@ export type Renderers = {
 export const app: IExpressoAppFactory<IAppConfig> = expresso(async (app: Express, config: IAppConfig, environment: string) => {
   if (!config.sendgrid.apiKey) throw new Error('Sendgrid key not set!')
 
-  container.register('DefaultFromAddress', { useValue: config.defaultFromAddress })
+  container.register('SenderConfig', { useValue: { fromAddress: config.defaultFromAddress, fromName: config.defaultFromName } })
   container.register('SendgridService', { useValue: sendgrid.factory(config.sendgrid.apiKey) })
   container.register('Renderers', { useValue: loader.loadRenderers(config.rendererList) })
   // Resolve services with container
