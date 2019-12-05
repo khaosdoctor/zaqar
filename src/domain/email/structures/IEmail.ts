@@ -1,12 +1,14 @@
+import { EmailData } from '@sendgrid/helpers/classes/email-address'
 export interface IEmail {
-  from: string
-  to: string[]
+  from: EmailData
+  to: EmailData[]
   subject: string
   template: {
     text: string
     lang: string
   }
   data: any
-  cc?: string[]
-  bcc?: string[]
+  replyTo?: EmailData
+  cc?: EmailData[]
+  bcc?: EmailData[]
 }
