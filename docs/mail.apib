@@ -35,12 +35,11 @@ Send an email to a recipient
         {
           type: 'object',
           properties: {
-            from: { type: 'string', format: 'email' },
+            from: { oneOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }] },
             to: {
               type: 'array',
               items: {
-                type: 'string',
-                format: 'email'
+                anyOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }]
               }
             },
             subject: {
@@ -58,18 +57,19 @@ Send an email to a recipient
             cc: {
               type: 'array',
               items: {
-                type: 'string',
-                format: 'email'
+                anyOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }]
               }
             },
             data: {
               type: 'object'
             },
+            replyTo: {
+              oneOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }]
+            },
             bcc: {
               type: 'array',
               items: {
-                type: 'string',
-                format: 'email'
+                anyOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }]
               }
             }
           },
@@ -86,6 +86,7 @@ Send an email to a recipient
         "lucas@test.com"
       ],
       "from": "from@email.com",
+      "replyTo": "from@email.com",
       "subject": "test",
       "bcc": [],
       "cc": [],
