@@ -1,5 +1,6 @@
 import { injectable } from 'tsyringe'
 import { IEmail } from './structures/IEmail'
+import { EmailData } from '@sendgrid/helpers/classes/email-address'
 import { RenderService } from '../../services/RenderService'
 
 @injectable()
@@ -7,16 +8,18 @@ export class Email {
   private readonly rawTemplate: string
   private readonly templateData: any
   private readonly templateLang: string
-  readonly from: string
-  readonly to: string[]
-  readonly cc: string[]
-  readonly bcc: string[]
+  readonly from: EmailData
+  readonly to: EmailData[]
+  readonly cc: EmailData[]
+  readonly bcc: EmailData[]
+  readonly replyTo?: EmailData
   readonly subject: string
   compiledTemplate: string = ''
 
   constructor (params: IEmail, private readonly renderService: RenderService) {
     this.from = params.from
     this.to = params.to
+    this.replyTo = params.replyTo || params.from
     this.subject = params.subject
     this.rawTemplate = params.template.text
     this.templateLang = params.template.lang
@@ -34,6 +37,9 @@ export class Email {
     return {
       to: this.to,
       from: this.from,
+      cc: this.cc,
+      bcc: this.bcc,
+      replyTo: this.replyTo,
       subject: this.subject,
       html: this.compiledTemplate
     }
@@ -44,6 +50,7 @@ export class Email {
       to: this.to,
       from: this.from,
       subject: this.subject,
+      replyTo: this.replyTo,
       bcc: this.bcc,
       cc: this.cc,
       template: {
