@@ -17,12 +17,11 @@
 </div><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Schema</h5><pre><code>{
   type: 'object',
   properties: {
-    from: { type: 'string', format: 'email' },
+    from: { oneOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }] },
     to: {
       type: 'array',
       items: {
-        type: 'string',
-        format: 'email'
+        anyOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }]
       }
     },
     subject: {
@@ -40,18 +39,19 @@
     cc: {
       type: 'array',
       items: {
-        type: 'string',
-        format: 'email'
+        anyOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }]
       }
     },
     data: {
       type: 'object'
     },
+    replyTo: {
+      oneOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }]
+    },
     bcc: {
       type: 'array',
       items: {
-        type: 'string',
-        format: 'email'
+        anyOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }]
       }
     }
   },
@@ -62,6 +62,7 @@
     <span class="hljs-string">"lucas@test.com"</span>
   ]</span>,
   "<span class="hljs-attribute">from</span>": <span class="hljs-value"><span class="hljs-string">"from@email.com"</span></span>,
+  "<span class="hljs-attribute">replyTo</span>": <span class="hljs-value"><span class="hljs-string">"from@email.com"</span></span>,
   "<span class="hljs-attribute">subject</span>": <span class="hljs-value"><span class="hljs-string">"test"</span></span>,
   "<span class="hljs-attribute">bcc</span>": <span class="hljs-value">[]</span>,
   "<span class="hljs-attribute">cc</span>": <span class="hljs-value">[]</span>,
