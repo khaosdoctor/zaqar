@@ -29,6 +29,8 @@ spec:
               value: {{ required "You must set a valid Sendgrid API key" .Values.environment.SENDGRID_APIKEY | quote }}
             - name: DEFAULT_FROM_ADDRESS
               value: {{ required "You must set a default from address" .Values.environment.DEFAULT_FROM_ADDRESS | quote }}
+            - name: DEFAULT_FROM_NAME
+              value: {{ required "You must set a default from name" .Values.environment.DEFAULT_FROM_NAME | quote }}
           ports:
             - name: http
               containerPort: 3000
