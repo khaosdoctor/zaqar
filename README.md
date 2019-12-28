@@ -44,7 +44,7 @@ helm repo add zaqar https://lsantos.dev/zaqar/helm
 This is going to add Zaqar to your helm repo list. Then you can "run":
 
 ```sh
-helm install zaqar/zaqar --name=zaqar-mail-server
+helm install zaqar/zaqar --name=zaqar-mail-server --set "environment.SENDGRID_APIKEY=key" ...
 ```
 
 > Zaqar is exposed **locally only**, this means you will **not** be able to access it externally unless you manually create an Ingress. This is due to the best practices where microservices should only communicate with each other in the local network
@@ -63,7 +63,6 @@ You should set two environment variables:
 - `DEFAULT_FROM_ADDRESS`: The email to be the "from" address in case there's no from address in the email.
 - `DEFAULT_FROM_NAME`: The name to be the "from" name in case there's no name specified.
 - `RENDERER_LIST`: A space-separated list of renderer packages to be loaded on load (see [renderers section](#renderer-plugins) for more details)
-
 
 ## API
 
