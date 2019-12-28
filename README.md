@@ -44,7 +44,7 @@ helm repo add zaqar https://lsantos.dev/zaqar/helm
 This is going to add Zaqar to your helm repo list. Then you can "run":
 
 ```sh
-helm install zaqar/zaqar --name=zaqar-mail-server
+helm install zaqar/zaqar --name=zaqar-mail-server --set "environment.SENDGRID_APIKEY=key" ...
 ```
 
 > Zaqar is exposed **locally only**, this means you will **not** be able to access it externally unless you manually create an Ingress. This is due to the best practices where microservices should only communicate with each other in the local network
@@ -61,8 +61,8 @@ You should set two environment variables:
 
 - `SENDGRID_APIKEY`: As of now, Zaqar only accepts Sendgrid as mail sender, so this is where you put your API ket
 - `DEFAULT_FROM_ADDRESS`: The email to be the "from" address in case there's no from address in the email.
+- `DEFAULT_FROM_NAME`: The name to be the "from" name in case there's no name specified.
 - `RENDERER_LIST`: A space-separated list of renderer packages to be loaded on load (see [renderers section](#renderer-plugins) for more details)
-
 
 ## API
 
@@ -78,59 +78,84 @@ Zaqar only has the `POST /send` endpoint which takes the following "payload":
     "text": "your {{template-like}} <% structure %>" // See renderer section
   },
   "cc": ["one@email.com"],
-  "bcc": ["two@email.com"]
+  "bcc": ["two@email.com"],
+  "replyTo": "email@email.com"
 }
 ```
 
+You can also send "complex" email fields with given names:
+
+```jsonc
+{
+  "to": [{email: "to@email.com", name: "Someone"}],
+  "from": {email: "to@email.com", name: "Someone"},
+  "subject": "subject",
+  "template": {
+    "lang": "renderer-language", // Renderer to be used
+    "text": "your {{template-like}} <% structure %>" // See renderer section
+  },
+  "cc": ["one@email.com"],
+  "bcc": ["two@email.com"],
+  "replyTo": "email@email.com"
+}
+```
+
+Only `'to', 'subject', 'template'` fields are required.
+
 Following the schema:
 
-```json
+```js
 {
-  "type": "object",
-  "properties": {
-    "from": { "type": "string", "format": "email" },
-    "to": {
-      "type": "array",
-      "items": { "type": "string", "format": "email" }
-    },
-    "subject": {
-      "type": "string"
-    },
-    "template": {
-      "type": "object",
-      "properties": {
-        "text": { "type": "string" },
-        "lang": { "type": "string" }
-      },
-      "additionalProperties": false,
-      "required": ["text", "lang"]
-    },
-    "cc": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "format": "email"
+  type: 'object',
+  properties: {
+    from: { oneOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }] },
+    to: {
+      type: 'array',
+      items: {
+        anyOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }]
       }
     },
-    "data": {
-      "type": "object"
+    subject: {
+      type: 'string'
     },
-    "bcc": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "format": "email"
+    template: {
+      type: 'object',
+      properties: {
+        text: { type: 'string' },
+        lang: { type: 'string' }
+      },
+      additionalProperties: false,
+      required: ['text', 'lang']
+    },
+    cc: {
+      type: 'array',
+      items: {
+        anyOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }]
+      }
+    },
+    data: {
+      type: 'object'
+    },
+    replyTo: {
+      oneOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }]
+    },
+    bcc: {
+      type: 'array',
+      items: {
+        anyOf: [{ type: 'string', format: 'email' }, { type: 'object', properties: { name: { type: 'string' }, email: { type: 'string', format: 'email' } } }]
       }
     }
   },
-  "required": ["to", "subject", "template"],
-  "additionalProperties": false
+  required: ['to', 'subject', 'template'],
+  additionalProperties: false
 }
 ```
 
 > The `data` key is reserved to template data variables, so if you have a variable called `username` in your email, you should send a `{ data: { username: "user" } }` in the payload.
 
-> If `from` is not filled, then the value of `DEFAULT_FROM_ADDRESS` env variable will be used
+> If `from` is not filled, then the value of `DEFAULT_FROM_ADDRESS` and `DEFAULT_FROM_NAME` variables will be used
+
+> In case there's no `replyTo` the `from` data will be used.
 
 Which answers:
 
