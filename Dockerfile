@@ -29,6 +29,7 @@ COPY --from=builder [\
   ]
 
 COPY --from=builder "/usr/src/app/dist" "/usr/app/dist"
+COPY ["./scripts/install_renderers.sh", "/usr/app/scripts/"]
 
 RUN npm install --only=prod
 
