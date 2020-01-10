@@ -10,6 +10,7 @@
   - [Usage](#usage)
     - [Docker](#docker)
     - [Helm Chart](#helm-chart)
+    - [Heroku](#heroku)
     - [Envs](#envs)
   - [API](#api)
   - [Renderer Plugins](#renderer-plugins)
@@ -245,5 +246,7 @@ These are the currently supported renderers for Zaqar:
   - **Lang:** mustache
 - [zaqar-renderer-ejs](https://github.com/khaosdoctor/zaqar-renderer-ejs):
   - **Lang:** ejs
+- [zaqar-renderer-pug](https://github.com/khaosdoctor/zaqar-renderer-pug):
+  - **Lang:** pug
 
 > If you want to add yours, please send a PR :)
