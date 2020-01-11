@@ -2,11 +2,19 @@ apiVersion: v1
 entries:
   zaqar:
   - apiVersion: v1
-    created: "2019-12-28T20:50:29.19536-03:00"
+    created: "2020-01-11T12:09:40.388777-03:00"
+    description: Email microservice
+    digest: ef76701a96fa9cb2f4805fbb9c48363c6da0c67b35c1bda5116410234654024b
+    name: zaqar
+    urls:
+    - https://lsantos.dev/zaqar/helm/zaqar-2.1.1.tgz
+    version: 2.1.1
+  - apiVersion: v1
+    created: "2020-01-11T12:09:40.388028-03:00"
     description: Email microservice
     digest: e39e910d8168c32a3d4640d7bbbd21986ad732a3f3e2c8444170939eff2cd7eb
     name: zaqar
     urls:
     - https://lsantos.dev/zaqar/helm/zaqar-2.1.0.tgz
     version: 2.1.0
-generated: "2019-12-28T20:50:29.194447-03:00"
+generated: "2020-01-11T12:09:40.386845-03:00"
