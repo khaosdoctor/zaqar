@@ -44,8 +44,16 @@ helm repo add zaqar https://lsantos.dev/zaqar/helm
 
 This is going to add Zaqar to your helm repo list. Then you can "run":
 
+If you're running `helm < 3.0` you should pass a `--name`:
+
 ```sh
 helm install zaqar/zaqar --name=zaqar-mail-server --set "environment.SENDGRID_APIKEY=key" ...
+```
+
+Otherwise, if you are on Helm version `>3.0`:
+
+```sh
+helm install zaqar-mail-server zaqar/zaqar --set "environment.SENDGRID_APIKEY=key" ...
 ```
 
 > Zaqar is exposed **locally only**, this means you will **not** be able to access it externally unless you manually create an Ingress. This is due to the best practices where microservices should only communicate with each other in the local network
