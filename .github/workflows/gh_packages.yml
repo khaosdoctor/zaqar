@@ -19,15 +19,16 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - uses: docker/build-push-action@v1.1.1
+      - name: Build and push image
+        uses: docker/build-push-action@v1.1.1
         with:
           # Username used to log in to a Docker registry. If not set then no login will occur
-          username: khaosdoctor
+          username: khaosdoctor/zaqar/zaqar
           # Password or personal access token used to log in to a Docker registry. If not set then no login will occur
           password: ${{ secrets.PACKAGES_PASSWORD }}
           # Server address of Docker registry. If not set then will default to Docker Hub
           registry: docker.pkg.github.com
           # Docker repository to tag the image with
-          repository: khaosdoctor/zaqar
+          repository: khaosdoctor
           # Automatically tags the built image with the git reference as per the readme
           tag_with_ref: true
