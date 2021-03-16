@@ -39,7 +39,7 @@ Zaqar was created to be a **fully implemented microservice**, in other words, yo
 Zaqar also comes with a helm chart so you can run it in a kubernetes infrastructure, this helm chart is located in this same repository so you can "run":
 
 ```sh
-helm repo add zaqar https://lsantos.dev/zaqar/helm
+helm repo add zaqar https://lsantos.me/zaqar/helm
 ```
 
 This is going to add Zaqar to your helm repo list. Then you can "run":
@@ -68,7 +68,7 @@ Click the button below to deploy zaqar to Heroku
 
 You should set two environment variables:
 
-- `SENDGRID_APIKEY`: As of now, Zaqar only accepts Sendgrid as mail sender, so this is where you put your API ket
+- `SENDGRID_APIKEY`: As of now, Zaqar only accepts Sendgrid as mail sender, so this is where you put your API key
 - `DEFAULT_FROM_ADDRESS`: The email to be the "from" address in case there's no from address in the email.
 - `DEFAULT_FROM_NAME`: The name to be the "from" name in case there's no name specified.
 - `RENDERER_LIST`: A space-separated list of renderer packages to be loaded on load (see [renderers section](#renderer-plugins) for more details)
