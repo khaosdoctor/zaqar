@@ -11,7 +11,8 @@ export class EmailService {
   }
 
   async sendEmail (emailData: IEmail): Promise<Email> {
-    const email = new Email({ from: { name: this.senderConfig.fromName, email: this.senderConfig.fromAddress }, ...emailData }, this.renderService)
+    if (!emailData.from) emailData.from = { name: this.senderConfig.fromName, email: this.senderConfig.fromAddress }
+    const email = new Email(emailData, this.renderService)
     await email.compileTemplate()
     return this.client.send(email)
   }

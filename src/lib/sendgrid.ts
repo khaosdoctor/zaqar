@@ -1,6 +1,6 @@
 import sg, { MailService } from '@sendgrid/mail'
 
-export function factory (apiKey: string): typeof MailService {
+export function factory (apiKey: string): MailService {
   sg.setApiKey(apiKey)
   return sg
 }
