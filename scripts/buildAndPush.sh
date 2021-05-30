@@ -1,3 +1,4 @@
+#!/bin/bash
 PARENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && cd .. && pwd )
 PACKAGE_VERSION=$(node -pe "require('$PARENT_DIR/package.json').version")
 PACKAGE_NAME=$(node -pe "require('$PARENT_DIR/package.json').name")

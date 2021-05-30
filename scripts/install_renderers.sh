@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 command -v npm >/dev/null 2>&1 || { echo >&2 "I require npm but it's not installed. Aborting."; exit 1; }
 
 echo "Installing Zaqar renderers..."
