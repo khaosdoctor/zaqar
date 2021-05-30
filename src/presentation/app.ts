@@ -9,7 +9,6 @@ import { IAppConfig } from '../app-config'
 import loader from '../utils/loadRenderers'
 import { IExpressoAppFactory } from '@expresso/server'
 import { Express, Request, Response, NextFunction } from 'express'
-
 export type RendererFn = (text: string, data: any) => Promise<string>
 export type RendererExport = { name: string, fn: RendererFn }
 export type Renderers = {
