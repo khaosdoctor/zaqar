@@ -66,7 +66,7 @@ Click the button below to deploy zaqar to Heroku
 
 ### Envs
 
-You should set two environment variables:
+You should set some environment variables:
 
 - `SENDGRID_APIKEY`: As of now, Zaqar only accepts Sendgrid as mail sender, so this is where you put your API key
 - `DEFAULT_FROM_ADDRESS`: The email to be the "from" address in case there's no from address in the email.
