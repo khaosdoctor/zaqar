@@ -57,6 +57,7 @@
     "@expresso/server": "^1.1.4",
     "@expresso/validator": "^1.1.7",
     "@sendgrid/mail": "^7.4.4",
+    "express-basic-auth": "^1.2.0",
     "express-rescue": "^1.1.31",
     "reflect-metadata": "^0.1.13",
     "require-glob": "^3.2.0",
