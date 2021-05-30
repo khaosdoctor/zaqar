@@ -1,6 +1,6 @@
 {
   "name": "zaqar",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Simple email microservice built with Node.js",
   "main": "dist/index.js",
   "scripts": {
