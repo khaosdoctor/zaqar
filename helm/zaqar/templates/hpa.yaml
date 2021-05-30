@@ -5,7 +5,7 @@ metadata:
   namespace: {{ default .Release.Namespace .Values.namespace }}
   labels:
     app: {{ .Values.name }}
-    version: {{ .Values.image.tag }}
+    version: v{{ default .Chart.Version .Values.image.tag }}
     env: {{ .Values.env }}
 spec:
   scaleTargetRef:

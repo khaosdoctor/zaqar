@@ -11,7 +11,7 @@ cpuUsage: 80
 
 image:
   name: zaqar
-  tag: v2.2.0
+  tag: ''
   pullPolicy: IfNotPresent
 
 service:

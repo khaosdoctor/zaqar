@@ -5,7 +5,7 @@ metadata:
   namespace: {{ default .Release.Namespace .Values.namespace }}
   labels:
     app: {{ .Values.name }}
-    version: {{ .Values.image.tag }}
+    version: v{{ default .Chart.Version .Values.image.tag }}
     env: {{ .Values.env }}
 spec:
   replicas: {{ .Values.replicaCount }}
@@ -17,12 +17,12 @@ spec:
     metadata:
       labels:
         app: {{ .Values.name }}
-        version: {{ .Values.image.tag }}
+        version: v{{ default .Chart.Version .Values.image.tag }}
         env: {{ .Values.env }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: "khaosdoctor/zaqar:{{ .Values.image.tag }}"
+          image: "khaosdoctor/zaqar:v{{ default .Chart.Version .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: SENDGRID_APIKEY
@@ -31,6 +31,10 @@ spec:
               value: {{ required "You must set a default from address" .Values.environment.DEFAULT_FROM_ADDRESS | quote }}
             - name: DEFAULT_FROM_NAME
               value: {{ required "You must set a default from name" .Values.environment.DEFAULT_FROM_NAME | quote }}
+            - name: AUTH_USERNAME
+              value: {{default "" .Values.environment.AUTH_USERNAME | quote }}
+            - name: AUTH_PASSWORD
+              value: {{default "" .Values.environment.AUTH_PASSWORD | quote }}
           ports:
             - name: http
               containerPort: 3000

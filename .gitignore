@@ -101,6 +101,8 @@ typings/
 # Output of 'npm pack'
 *.tgz
 
+!helm/*.tgz
+
 # Yarn Integrity file
 .yarn-integrity
 
