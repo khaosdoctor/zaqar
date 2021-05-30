@@ -72,6 +72,14 @@ You should set some environment variables:
 - `DEFAULT_FROM_ADDRESS`: The email to be the "from" address in case there's no from address in the email.
 - `DEFAULT_FROM_NAME`: The name to be the "from" name in case there's no name specified.
 - `RENDERER_LIST`: A space-separated list of renderer packages to be loaded on load (see [renderers section](#renderer-plugins) for more details)
+- `AUTH_USERNAME`: If provided, will set the basic auth username
+- `AUTH_PASSWORD`: If provided, will set the basic auth password
+
+#### Basic Authentication
+
+If both `AUTH_USERNAME` and `AUTH_PASSWORD` are provided, Zaqar will enter the auth mode. This mode only allows requests with the `Authorization Basic` header set, if the user or the password do not match, the service will return `401`.
+
+If one of the two variables are not set, Zaqar will run in authless mode.
 
 ## API
 
