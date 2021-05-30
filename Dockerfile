@@ -35,4 +35,4 @@ RUN npm install --only=prod
 
 EXPOSE 3000
 
-ENTRYPOINT [ "npm", "start" ]
+ENTRYPOINT [ "node", "dist/index.js" ]
