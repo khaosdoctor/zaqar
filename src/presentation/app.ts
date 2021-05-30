@@ -27,6 +27,7 @@ export const app: IExpressoAppFactory<IAppConfig> = expresso(async (app: Express
   const services = container.resolve(Services)
 
   if (config.auth.user && config.auth.pass) {
+
     console.log('Using Basic Authentication')
     app.use(basicAuth({
       challenge: true,

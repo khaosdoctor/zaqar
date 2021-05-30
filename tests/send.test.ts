@@ -3,10 +3,47 @@ import env from 'sugar-env'
 import { expect } from 'chai'
 import axiosist from 'axiosist'
 import { app, Renderers } from '../src/presentation/app'
-import sg from '@sendgrid/mail'
+import sg, { MailService } from '@sendgrid/mail'
 import { AxiosInstance, AxiosResponse } from 'axios'
 import { config, IAppConfig } from '../src/app-config'
 import loader from '../src/utils/loadRenderers'
+import sendgridLib from '../src/lib/sendgrid'
+import { Client } from '@sendgrid/client'
+import { ClientResponse } from '@sendgrid/client/src/response'
+import { ResponseError } from '@sendgrid/helpers/classes'
+
+class MockMailServer implements MailService {
+  setApiKey (_: string): void {
+    return
+  }
+  setClient (_: Client): void {
+    return
+  }
+  setTwilioEmailAuth (_: string, __: string): void {
+    return
+  }
+  setTimeout (_: number): void {
+    return
+  }
+  setSubstitutionWrappers (_: string, __: string): void {
+    return
+  }
+  send (data: sg.MailDataRequired | sg.MailDataRequired[], isMultiple?: boolean, cb?: (err: Error | ResponseError, result: [ClientResponse, {}]) => void): Promise<[ClientResponse, {}]> {
+    const response = {
+      data,
+      isMultiple,
+      cb,
+      statusCode: 200,
+      body: {},
+      headers: []
+    }
+    return Promise.resolve([response, {}])
+  }
+  sendMultiple (data: sg.MailDataRequired, cb?: (error: Error | ResponseError, result: [ClientResponse, {}]) => void): Promise<[ClientResponse, {}]> {
+    return this.send(data, true, cb)
+  }
+
+}
 
 const options: IAppConfig = {
   ...config,
@@ -18,16 +55,10 @@ const options: IAppConfig = {
 }
 
 describe('POST /send', () => {
-
   before(() => {
-    sinon.stub(sg, 'send')
-      .callsFake((message: any, isMultiple?: boolean, cb?: any): Promise<[any, {}]> => {
-        const response = {
-          message,
-          isMultiple,
-          cb
-        }
-        return Promise.resolve([response, {}])
+    sinon.stub(sendgridLib, 'factory')
+      .callsFake((_: string) => {
+        return new MockMailServer()
       })
   })
 
@@ -117,6 +148,102 @@ describe('POST /send', () => {
         expect(response.data.template.lang).to.equal(emailData.template.lang)
         expect(response.data.template.text).to.equal(emailData.template.text)
       })
+    })
+  })
+
+  describe('when required parameters are given using basic auth', () => {
+    let api: AxiosInstance
+    let response: AxiosResponse<any>
+    let loaderStub: any
+    const emailData = { from: 'mock@email.com', to: ['test@mock.com'], subject: 'mock', template: { lang: 'nunjucks', text: 'my template' }, data: { name: 'test' } }
+
+    before(async () => {
+      loaderStub = sinon.stub(loader, 'loadRenderers')
+        .returns({ nunjucks: sinon.stub().callsFake((text: string, _data: any) => text) })
+      const basicOptions = Object.assign({}, options)
+      basicOptions.auth = {
+        pass: 'somepass',
+        user: 'someuser'
+      }
+      api = axiosist(await app(basicOptions, env.TEST))
+      response = await api.post('/send', emailData, { auth: { username: basicOptions.auth.user, password: basicOptions.auth.pass } })
+      loaderStub.restore()
+    })
+
+    it('should return HTTP 202', () => {
+      expect(response.status).to.be.equal(202)
+    })
+
+    it('should return an object', () => {
+      expect(response.data).to.be.an('object')
+    })
+
+    describe('the renderer', () => {
+      it('should have been called once with all email data', () => {
+        expect(loaderStub.called).to.equal(true)
+        expect(loaderStub.calledOnce).to.equal(true)
+        expect(loaderStub.calledWith(emailData.template.text, emailData.data))
+      })
+    })
+
+    describe('the object', () => {
+      it('should be an email', () => {
+        describe('when `from` property is given', () => {
+          it('should not replace property `from` when it is given', () => {
+            expect(response.data).to.have.property('from')
+            expect(response.data.from).to.equal(emailData.from)
+          })
+        })
+
+        describe('when `replyTo` property is missing', () => {
+          it('should add a `replyTo` property when it is missing with the data from the `from` property', () => {
+            expect(response.data).to.have.property('replyTo')
+            expect(response.data.replyTo).to.equal(emailData.from)
+          })
+        })
+
+        expect(response.data).to.have.property('to')
+        expect(response.data.to.length).to.equal(1)
+        expect(response.data).to.have.property('subject')
+        expect(response.data.subject).to.equal(emailData.subject)
+        expect(response.data).to.have.property('bcc')
+        expect(response.data.bcc.length).to.equal(0)
+        expect(response.data).to.have.property('cc')
+        expect(response.data.cc.length).to.equal(0)
+        expect(response.data).to.have.property('template')
+        expect(response.data.template).to.have.property('text')
+        expect(response.data.template).to.have.property('lang')
+        expect(response.data.template.lang).to.equal(emailData.template.lang)
+        expect(response.data.template.text).to.equal(emailData.template.text)
+      })
+    })
+  })
+
+  describe('when required parameters are given using basic auth but wrong username', () => {
+    let api: AxiosInstance
+    let response: AxiosResponse<any>
+    let loaderStub: any
+    const emailData = { from: 'mock@email.com', to: ['test@mock.com'], subject: 'mock', template: { lang: 'nunjucks', text: 'my template' }, data: { name: 'test' } }
+
+    before(async () => {
+      loaderStub = sinon.stub(loader, 'loadRenderers')
+        .returns({ nunjucks: sinon.stub().callsFake((text: string, _data: any) => text) })
+      const basicOptions = Object.assign({}, options)
+      basicOptions.auth = {
+        pass: 'somepass',
+        user: 'someuser'
+      }
+      api = axiosist(await app(basicOptions, env.TEST))
+      response = await api.post('/send', emailData, { auth: { username: basicOptions.auth.user, password: '' } })
+      loaderStub.restore()
+    })
+
+    it('should return HTTP 401', () => {
+      expect(response.status).to.be.equal(401)
+    })
+
+    it('should not return an object', () => {
+      expect(response.data).not.to.be.an('object')
     })
   })
 
