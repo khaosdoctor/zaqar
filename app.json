@@ -18,6 +18,14 @@
     "SENDGRID_APIKEY": {
       "description": "As of now, Zaqar only accepts Sendgrid as mail sender, so this is where you put your API key",
       "required": true
+    },
+    "AUTH_USERNAME": {
+      "description": "Username for authentication, if empty, no auth will be used",
+      "required": false
+    },
+    "AUTH_PASS": {
+      "description": "Password for authentication, if empty, no auth will be used",
+      "required": false
     }
   }
 }

@@ -9,6 +9,10 @@ export interface IAppConfig extends IExpressoConfigOptions {
   rendererList: string,
   sendgrid: {
     apiKey: string
+  },
+  auth: {
+    user: string
+    pass: string
   }
   server?: IServerConfig['server']
 }
@@ -24,5 +28,9 @@ export const config: IAppConfig = {
   },
   sendgrid: {
     apiKey: env.get('SENDGRID_APIKEY', '')
+  },
+  auth: {
+    user: env.get('AUTH_USERNAME', ''),
+    pass: env.get('AUTH_PASSWORD', '')
   }
 }

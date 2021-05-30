@@ -9,6 +9,7 @@ import { IAppConfig } from '../app-config'
 import loader from '../utils/loadRenderers'
 import { IExpressoAppFactory } from '@expresso/server'
 import { Express, Request, Response, NextFunction } from 'express'
+import basicAuth from 'express-basic-auth'
 
 export type RendererFn = (text: string, data: any) => Promise<string>
 export type RendererExport = { name: string, fn: RendererFn }
@@ -24,6 +25,14 @@ export const app: IExpressoAppFactory<IAppConfig> = expresso(async (app: Express
   container.register('Renderers', { useValue: loader.loadRenderers(config.rendererList) })
   // Resolve services with container
   const services = container.resolve(Services)
+
+  if (config.auth.user && config.auth.pass) {
+    app.use(basicAuth({
+      challenge: true,
+      realm: 'zaqar',
+      users: { [config.auth.user]: config.auth.pass }
+    }))
+  }
 
   app.post('/send', routes.email.send(services.emailService))
 

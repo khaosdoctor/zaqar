@@ -1,3 +1,5 @@
 export SENDGRID_APIKEY=
 export DEFAULT_FROM_ADDRESS=
 export RENDERER_LIST=
+export AUTH_USERNAME=
+export AUTH_PASS=
