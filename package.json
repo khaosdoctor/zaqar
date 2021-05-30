@@ -14,7 +14,7 @@
     "build:start": "npm run build:clean && npm start",
     "helm-index": "cd helm && helm package zaqar && helm repo index . --url https://oss.lsantos.dev/zaqar/helm",
     "start": "./scripts/install_renderers.sh && npm run build:clean && node dist/index.js",
-    "start:debug": "concurrently -s all \"tsc -w\" \"DEBUG=expresso:*,gg:* nodemon dist/index.js\""
+    "start:debug": "concurrently -s all \"tsc -w\" \"DEBUG=expresso:* nodemon dist/index.js\""
   },
   "repository": {
     "type": "git",
