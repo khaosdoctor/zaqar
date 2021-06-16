@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Publish to GitHub Container Registry
 
 on:
@@ -7,29 +5,16 @@ on:
     types:
       - published
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-20.04
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
       - name: Build and push image
         uses: docker/build-push-action@v1.1.1
         with:
-          # Username used to log in to a Docker registry. If not set then no login will occur
           username: khaosdoctor
-          # Password or personal access token used to log in to a Docker registry. If not set then no login will occur
-          password: ${{ secrets.PACKAGES_PASSWORD }}
-          # Server address of Docker registry. If not set then will default to Docker Hub
-          registry: docker.pkg.github.com
-          # Docker repository to tag the image with
-          repository: khaosdoctor/zaqar/zaqar
-          # Automatically tags the built image with the git reference as per the readme
+          password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+          repository: khaosdoctor/zaqar
           tag_with_ref: true
           tags: latest
