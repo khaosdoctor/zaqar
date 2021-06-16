@@ -1,4 +1,4 @@
-name: Publish to GitHub Container Registry
+name: Publish to Registry
 
 on:
   push:
