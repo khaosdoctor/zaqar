@@ -1,9 +1,9 @@
 name: Publish to GitHub Container Registry
 
 on:
-  release:
-    types:
-      - published
+  push:
+    tags:
+      - v*.*.*
 
 jobs:
   build:
