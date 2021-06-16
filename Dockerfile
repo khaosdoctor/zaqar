@@ -29,10 +29,10 @@ COPY --from=builder [\
   ]
 
 COPY --from=builder "/usr/src/app/dist" "/usr/app/dist"
-COPY ["./scripts/install_renderers.sh", "/usr/app/scripts/"]
+COPY "./scripts/install_renderers.sh" "/usr/app/scripts/install_renderers.sh"
 
 RUN npm install --only=prod
 
 EXPOSE 3000
 
-ENTRYPOINT [ "node", "dist/index.js" ]
+ENTRYPOINT [ "npm", "start" ]
