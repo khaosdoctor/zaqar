@@ -1,4 +1,4 @@
-FROM node:12 AS builder
+FROM node:16-alpine AS builder
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -17,7 +17,7 @@ RUN npm run build
 
 # PRODUCTION IMAGE
 
-FROM node:12-alpine
+FROM node:16-alpine
 
 RUN mkdir -p /usr/app
 WORKDIR /usr/app
