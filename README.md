@@ -39,8 +39,10 @@ Zaqar was created to be a **fully implemented microservice**, in other words, yo
 Zaqar also comes with a helm chart so you can run it in a kubernetes infrastructure, this helm chart is located in this same repository so you can "run":
 
 ```sh
-helm repo add zaqar https://lsantos.me/zaqar/helm
+helm repo add zaqar https://oss.lsantos.dev/zaqar/helm
 ```
+
+> If you want to use GitHub's servers instead, you can use `https://khaosdoctor.github.io/zaqar/helm`
 
 This is going to add Zaqar to your helm repo list. Then you can "run":
 
